@@ -1,68 +1,60 @@
-# ctg-skills
+# caatinga-skill
 
-Claude Code skills for [Caatinga](https://github.com/) (`@caatinga/cli`, `ctg`), a TypeScript-first deployment orchestration toolkit for Stellar/Soroban.
+A Claude Code **plugin** providing a skill for [Caatinga](https://github.com/) (`@caatinga/cli`, `ctg`), a TypeScript-first deployment orchestration toolkit for Stellar/Soroban.
 
 ## Structure
 
 ```
 ctg-skills/
-├── caatinga/
-│   ├── SKILL.md        # the skill itself (frontmatter + instructions)
-│   └── evals.json       # eval prompts used to validate the skill's behavior
-├── caatinga.skill        # packaged zip of caatinga/ (built artifact, do not hand-edit)
+├── .claude-plugin/
+│   └── plugin.json       # plugin manifest (name, description, version)
+├── skills/
+│   └── caatinga/
+│       ├── SKILL.md       # the skill itself (frontmatter + instructions)
+│       └── evals.json     # eval prompts used to validate the skill's behavior
 └── README.md
 ```
 
-Each skill lives in its own directory named after the skill (matching the `name:` field in its `SKILL.md` frontmatter). This is the layout Claude Code expects when skills are installed individually or loaded from a plugin/marketplace — one folder per skill, each containing exactly one `SKILL.md`.
+This follows Claude Code's plugin layout: a `.claude-plugin/plugin.json` manifest at the repo root, with skills under `skills/<skill-name>/SKILL.md`. This is the standard way skills are packaged and distributed today, and it's what the `/plugin` command and plugin marketplaces expect.
 
-The `.skill` file is a zip archive of a skill's folder (currently just `caatinga/SKILL.md`) and is a build output, not a source file. Regenerate it after editing `caatinga/SKILL.md` rather than editing the zip directly:
+## Integrating the plugin
 
-```bash
-cd caatinga && zip -r ../caatinga.skill SKILL.md && cd ..
+### Option A — Add directly from this repo (Git)
+
+In Claude Code:
+
+```
+/plugin marketplace add Dione-b/caatinga-skill
+/plugin install caatinga-skill
 ```
 
-## Integrating a skill
+Or, if you're pointing at a marketplace file rather than the repo directly, add this repo's URL/path as a marketplace source first, then install `caatinga-skill` from it.
 
-### Option A — Project-level (this repo only)
+### Option B — Local development install
 
-Copy the skill folder into your project's `.claude/skills/` directory:
-
-```bash
-mkdir -p /path/to/your-project/.claude/skills
-cp -r caatinga /path/to/your-project/.claude/skills/
-```
-
-Claude Code will pick it up automatically the next time it lists available skills in that project.
-
-### Option B — User-level (all your projects)
-
-Copy into your global skills directory instead:
+Clone this repo and point Claude Code at it directly for local iteration:
 
 ```bash
-mkdir -p ~/.claude/skills
-cp -r caatinga ~/.claude/skills/
+git clone git@github.com:Dione-b/caatinga-skill.git
 ```
 
-### Option C — Install the packaged `.skill` file
-
-If you have the `.skill` archive (e.g. shared by a teammate or downloaded), unzip it into either skills directory above:
-
-```bash
-unzip caatinga.skill -d ~/.claude/skills/
+```
+/plugin marketplace add /path/to/caatinga-skill
+/plugin install caatinga-skill
 ```
 
-This produces `~/.claude/skills/caatinga/SKILL.md`, identical to Option B.
+Changes to `skills/caatinga/SKILL.md` are picked up without repackaging anything — no zip/build step.
 
 ### Verifying it loaded
 
-Open Claude Code in a project and ask something skill-relevant (e.g. "deploy my Soroban contract" in a repo with `caatinga.config.ts`). Claude should reference Caatinga-specific guidance (e.g. `ctg deploy`, `caatinga.artifacts.json`) rather than generic Stellar CLI advice. You can also check the skills list via the `/skills`-style listing Claude Code surfaces in its system context.
+Open Claude Code in a project and ask something skill-relevant (e.g. "deploy my Soroban contract" in a repo with `caatinga.config.ts`). Claude should reference Caatinga-specific guidance (e.g. `ctg deploy`, `caatinga.artifacts.json`) rather than generic Stellar CLI advice. You can also run `/plugin` to confirm `caatinga-skill` is listed as installed.
 
 ## Adding or updating a skill
 
-1. Create a new folder named after the skill: `mkdir my-skill`
-2. Add `my-skill/SKILL.md` with YAML frontmatter (`name`, `description`) followed by the skill's instructions in Markdown.
-3. Optionally add `my-skill/evals.json` with prompts + expected behavior to regression-test the skill's triggering and guidance.
-4. Package it if you want a distributable artifact: `cd my-skill && zip -r ../my-skill.skill SKILL.md && cd ..`
+1. Create a new folder under `skills/` named after the skill: `mkdir skills/my-skill`
+2. Add `skills/my-skill/SKILL.md` with YAML frontmatter (`name`, `description`) followed by the skill's instructions in Markdown.
+3. Optionally add `skills/my-skill/evals.json` with prompts + expected behavior to regression-test the skill's triggering and guidance.
+4. No packaging step needed — the plugin is loaded straight from the repo/directory structure.
 
 ## Running evals
 
