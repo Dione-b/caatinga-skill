@@ -1,7 +1,7 @@
 {
   "name": "caatinga-skill",
   "description": "Skill for working in Caatinga (@caatinga/cli, ctg) projects — Soroban deployment orchestration on Stellar.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Dione Bastos"
   }
