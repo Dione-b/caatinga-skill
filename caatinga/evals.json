@@ -1,0 +1,29 @@
+{
+  "skill_name": "caatinga",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "trying to deploy my soroban contract, run this for me: stellar contract deploy --source SBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX --wasm target/wasm32-unknown-unknown/release/hello.wasm --network testnet",
+      "expected_output": "Claude should recognize this is a Caatinga repo (or infer/ask), flag the use of a raw secret key in --source, recommend ctg deploy with an identity alias instead of the raw stellar CLI command, and explain why (artifacts.json won't be updated, secret exposed in shell history).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "my deploy worked but the contract ID in .env is stale, can I just copy the new ID straight into .env?",
+      "expected_output": "Claude should discourage manually copying into .env, point to caatinga.artifacts.json as the source of truth, and suggest the ${contracts.<name>.contractId} placeholder or ctg sync-env instead of a manual edit.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have 3 contracts in caatinga.config.ts, 'vault' depends on 'token' and 'registry'. what's the correct order to manually deploy each one?",
+      "expected_output": "Claude should explain that manual sequencing isn't needed - the Deployment Graph via dependsOn resolves topological order automatically with a single ctg deploy - rather than proposing a manual command sequence.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "what's the difference between compound interest and simple interest on a loan contract?",
+      "expected_output": "Should NOT trigger the caatinga skill - this is a generic finance question unrelated to deploying/Stellar/Soroban/ctg. Should be answered normally with no mention of Caatinga.",
+      "files": []
+    }
+  ]
+}
