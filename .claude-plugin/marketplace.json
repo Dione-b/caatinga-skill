@@ -1,5 +1,6 @@
 {
   "name": "caatinga-skill",
+  "description": "Marketplace hosting the caatinga-skill plugin for Caatinga (@caatinga/cli, ctg) Soroban deployment projects.",
   "owner": {
     "name": "Dione Bastos"
   },
