@@ -1,6 +1,8 @@
 # caatinga-skill
 
-A Claude Code **plugin** providing a skill for [Caatinga](https://github.com/) (`@caatinga/cli`, `ctg`), a TypeScript-first deployment orchestration toolkit for Stellar/Soroban.
+A Claude Code **plugin** providing a skill for Caatinga (`@caatinga/cli`, `ctg`), a TypeScript-first deployment orchestration toolkit for Stellar/Soroban.
+
+This repo is itself a plugin **marketplace**: [github.com/Dione-b/caatinga-skill](https://github.com/Dione-b/caatinga-skill).
 
 ## Structure
 
