@@ -1,0 +1,13 @@
+{
+  "name": "caatinga-skill",
+  "owner": {
+    "name": "Dione Bastos"
+  },
+  "plugins": [
+    {
+      "name": "caatinga-skill",
+      "source": "./",
+      "description": "Skill for working in Caatinga (@caatinga/cli, ctg) projects — Soroban deployment orchestration on Stellar."
+    }
+  ]
+}

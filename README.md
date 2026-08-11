@@ -7,7 +7,8 @@ A Claude Code **plugin** providing a skill for [Caatinga](https://github.com/) (
 ```
 ctg-skills/
 ├── .claude-plugin/
-│   └── plugin.json       # plugin manifest (name, description, version)
+│   ├── plugin.json        # plugin manifest (name, description, version)
+│   └── marketplace.json   # marketplace manifest — lets this repo be added as a plugin source
 ├── skills/
 │   └── caatinga/
 │       ├── SKILL.md       # the skill itself (frontmatter + instructions)
@@ -15,7 +16,7 @@ ctg-skills/
 └── README.md
 ```
 
-This follows Claude Code's plugin layout: a `.claude-plugin/plugin.json` manifest at the repo root, with skills under `skills/<skill-name>/SKILL.md`. This is the standard way skills are packaged and distributed today, and it's what the `/plugin` command and plugin marketplaces expect.
+This follows Claude Code's plugin layout: a `.claude-plugin/plugin.json` manifest at the repo root, with skills under `skills/<skill-name>/SKILL.md`. `marketplace.json` turns the repo itself into a marketplace containing one plugin (`caatinga-skill`), so it can be added and installed directly from Git without a separate marketplace repo.
 
 ## Integrating the plugin
 
@@ -25,10 +26,10 @@ In Claude Code:
 
 ```
 /plugin marketplace add Dione-b/caatinga-skill
-/plugin install caatinga-skill
+/plugin install caatinga-skill@caatinga-skill
 ```
 
-Or, if you're pointing at a marketplace file rather than the repo directly, add this repo's URL/path as a marketplace source first, then install `caatinga-skill` from it.
+The first argument to `/plugin install` is the plugin name, the part after `@` is the marketplace name — both are `caatinga-skill` here since the repo defines a marketplace with one plugin of the same name.
 
 ### Option B — Local development install
 
