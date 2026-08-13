@@ -78,4 +78,4 @@ If none of these files exist in the repo (e.g. the user is asking a general ques
 
 ## Versioning note
 
-Caatinga is pre-1.0 (alpha). Latest is a moving target — confirm with `npm view @caatinga/cli dist-tags` rather than quoting a version from memory, and recommend pinning exact versions in CI rather than a range.
+Caatinga ships a v1.0 stable contract on npm major `3.x` — breaking changes land on a major bump, so `3.x` is safe to depend on. Patch releases still move fast, so confirm the current version with `npm view @caatinga/cli dist-tags` rather than quoting one from memory, and recommend pinning an exact version in CI rather than a range.
