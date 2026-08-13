@@ -21,6 +21,8 @@ init → doctor → build → deploy → generate → read / invoke → browser
 
 Contracts declare `dependsOn` in `caatinga.config.ts`; Caatinga topologically sorts them into a **Deployment Graph** and deploys in the correct order. Don't manually sequence multi-contract deploys — that's what the graph is for.
 
+`generate` requires a `frontend.bindingsOutput` field in `caatinga.config.ts` — this is missing by default in `--minimal`-scaffolded projects, and running `generate` without it fails with `CAATINGA_INVALID_CONFIG`. If a project has no `frontend` config, say so and give the field to add rather than telling the user to just run `ctg generate`.
+
 ## Hard rules (security- and correctness-critical)
 
 These aren't style preferences — violating them either leaks secrets or desyncs the artifact/binding source of truth, which then produces silent, hard-to-debug drift between what's deployed and what the app calls.
@@ -33,6 +35,7 @@ These aren't style preferences — violating them either leaks secrets or desync
 | Hand-edit generated bindings (`ctg generate` output) | Regenerate bindings | Edits are silently overwritten on next `generate` and mask binding-freshness drift. |
 | Assume browser invoke supports multisig | Treat browser invoke as single-invoker only (pre-v1.0) | Caatinga does not implement multisig; recommending a multisig flow here will produce a broken or misleading UX. |
 | Reach for raw `stellar` CLI deploy commands in a Caatinga repo | Use `ctg deploy` | Raw deploys bypass the deployment graph and never touch `caatinga.artifacts.json`, breaking downstream `ctg generate` / `ctg wire` / `ctg sync-env`. |
+| Treat `ctg identity export` output as safe to log, paste, or store casually | Treat it as raw key material — it's base64 of a tarball of the whole Stellar config dir (including secret keys), **not encrypted** — pipe it straight into a CI secret store (e.g. `CAATINGA_CI_STELLAR_CONFIG_B64`) | It's the entire keystore, not a scoped credential; treating it like an opaque token risks it landing in logs, tickets, or chat history. On CLI versions before 3.9.2, exporting/importing also left a copy behind, world-readable, in `os.tmpdir()` — if the project's Caatinga predates 3.9.2, flag checking for and deleting `/tmp/caatinga-stellar-*.tar.gz` and rotating keys if found. |
 
 If a user explicitly asks for one of the "never" items anyway (e.g. "just give me the raw stellar CLI command"), comply but flag the tradeoff in one sentence — don't silently refuse, and don't silently comply without the caveat either.
 

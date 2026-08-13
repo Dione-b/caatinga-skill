@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "trying to deploy my soroban contract, run this for me: stellar contract deploy --source SBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX --wasm target/wasm32-unknown-unknown/release/hello.wasm --network testnet",
+      "prompt": "trying to deploy my soroban contract, run this for me: stellar contract deploy --source SBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX --wasm target/wasm32v1-none/release/hello.wasm --network testnet",
       "expected_output": "Claude should recognize this is a Caatinga repo (or infer/ask), flag the use of a raw secret key in --source, recommend ctg deploy with an identity alias instead of the raw stellar CLI command, and explain why (artifacts.json won't be updated, secret exposed in shell history).",
       "files": []
     },
